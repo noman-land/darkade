@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import './App.css';
 
-const BOARD_SIZE = 64;
+const KEY_LENGTH = 4096;
 
 const tickLengthMs = 100;
 
@@ -29,19 +29,24 @@ const getNeighbors = ({ x, y }, board) => {
 const getLiveNeighborCount = ({ x, y }, board) =>
   getNeighbors({ x, y }, board).filter(c => c).length;
 
-// Turn game map into two dimentional array
-const cells = Array.from(Array(4096))
-  .map(() => Boolean(Math.random() > 0.5))
-  .reduce((accum, value, i) => {
-    const tens = Math.floor(i / BOARD_SIZE);
-    const ones = i - tens * BOARD_SIZE;
-    if (accum[tens]) {
-      accum[tens][ones] = value;
-    } else {
-      accum[tens] = [value];
-    }
-    return accum;
-  }, []);
+const makeGameBoard = bitArray => {
+  const boardSize = Math.sqrt(bitArray.length);
+  return bitArray
+    .map(() => Math.random() > 0.5)
+    .reduce((accum, value, i) => {
+      const tens = Math.floor(i / boardSize);
+      const ones = i - tens * boardSize;
+      if (accum[tens]) {
+        accum[tens][ones] = value;
+      } else {
+        accum[tens] = [value];
+      }
+      return accum;
+    }, []);
+};
+
+// Turn key/bitString into two dimentional array
+const gameBoard = makeGameBoard(Array.from(Array(KEY_LENGTH)));
 
 const calculateLife = ({ x, y }, board) => {
   const alive = board[y][x];
@@ -62,7 +67,7 @@ const calculateLife = ({ x, y }, board) => {
 };
 
 const App = () => {
-  const [board, setBoard] = useState(cells);
+  const [board, setBoard] = useState(gameBoard);
 
   useEffect(() => {
     const interval = setInterval(() => {
