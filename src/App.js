@@ -4,7 +4,7 @@ import './App.css';
 
 const KEY_LENGTH = 4096;
 
-const tickLengthMs = 100;
+const DEFAILT_MS_PER_FRAME = 100;
 
 const wrapAround = (coord, size) => (coord >= 0 ? coord % size : coord + size);
 
@@ -66,7 +66,8 @@ const calculateLife = ({ x, y }, board) => {
   return false;
 };
 
-const App = () => {
+const useConway = () => {
+  const [msPerFrame, setMsPerFrame] = useState(DEFAILT_MS_PER_FRAME);
   const [board, setBoard] = useState(gameBoard);
 
   useEffect(() => {
@@ -74,11 +75,16 @@ const App = () => {
       setBoard(board =>
         board.map((row, y) => row.map((_, x) => calculateLife({ x, y }, board)))
       );
-    }, tickLengthMs);
+    }, msPerFrame);
 
     return () => clearInterval(interval);
   }, [setBoard]);
 
+  return { board, setMsPerFrame };
+};
+
+export const App = () => {
+  const { board } = useConway();
   return (
     <div className="app">
       <div className="game-board">
@@ -96,5 +102,3 @@ const App = () => {
     </div>
   );
 };
-
-export default App;
