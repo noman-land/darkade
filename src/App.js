@@ -6,19 +6,27 @@ const BOARD_SIZE = 64;
 
 const tickLengthMs = 200;
 
+const wrapAround = coord => (coord >= 0 ? coord : coord + BOARD_SIZE);
+
 const getNeighbors = ({ x, y }, board) => {
-  const rowAbove = board[y + 1] === undefined ? [] : board[y + 1];
-  const rowBelow = board[y - 1] === undefined ? [] : board[y - 1];
+  const rowAboveIndex = wrapAround(y + 1);
+  const rowBelowIndex = wrapAround(y - 1);
+  const rowAbove =
+    board[rowAboveIndex] === undefined ? [] : board[rowAboveIndex];
+  const rowBelow =
+    board[rowBelowIndex] === undefined ? [] : board[rowBelowIndex];
+  const colRight = wrapAround(x + 1);
+  const colLeft = wrapAround(x - 1);
 
   return [
     rowAbove[x], // top
-    rowAbove[x + 1], // top right
-    board[y][x + 1], // right
-    rowBelow[x + 1], // bottom right
+    rowAbove[colRight], // top right
+    board[y][colRight], // right
+    rowBelow[colRight], // bottom right
     rowBelow[x], // bottom
-    rowBelow[x - 1], // bottom left
-    board[y][x - 1], // left
-    rowAbove[x - 1], // top left
+    rowBelow[colLeft], // bottom left
+    board[y][colLeft], // left
+    rowAbove[colLeft], // top left
   ];
 };
 
@@ -46,11 +54,13 @@ const calculateLife = ({ x, y }, board) => {
   // Any dead cell with three live neighbours becomes a live cell.
   // Any live cell with two or three live neighbours survives.
   // All other live cells die in the next generation. Similarly, all other dead cells stay dead.
-  if (liveNeighborCount === 3) {
-    return true;
+  if (alive) {
+    if (liveNeighborCount === 2 || liveNeighborCount === 3) {
+      return true;
+    }
   }
 
-  if (alive && liveNeighborCount === 2) {
+  if (liveNeighborCount === 3) {
     return true;
   }
 
@@ -62,7 +72,6 @@ const App = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // debugger;
       setBoard(board =>
         board.map((row, y) => row.map((_, x) => calculateLife({ x, y }, board)))
       );
