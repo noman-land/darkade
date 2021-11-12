@@ -4,7 +4,7 @@ import './App.css';
 
 const BOARD_SIZE = 64;
 
-const tickLengthMs = 200;
+const tickLengthMs = 50;
 
 const wrapAround = coord =>
   coord >= 0 ? coord % BOARD_SIZE : coord + BOARD_SIZE;
