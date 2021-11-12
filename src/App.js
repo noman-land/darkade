@@ -6,7 +6,8 @@ const BOARD_SIZE = 64;
 
 const tickLengthMs = 200;
 
-const wrapAround = coord => (coord >= 0 ? coord : coord + BOARD_SIZE);
+const wrapAround = coord =>
+  coord >= 0 ? coord % BOARD_SIZE : coord + BOARD_SIZE;
 
 const getNeighbors = ({ x, y }, board) => {
   const rowAboveIndex = wrapAround(y + 1);
