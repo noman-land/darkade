@@ -16,6 +16,10 @@ body,
   justify-content: center;
 }
 
+.game-board {
+  border: 1px solid black;
+}
+
 .row {
   min-height: 9px;
   max-height: 9px;
