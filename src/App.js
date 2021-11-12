@@ -10,24 +10,20 @@ const wrapAround = coord =>
   coord >= 0 ? coord % BOARD_SIZE : coord + BOARD_SIZE;
 
 const getNeighbors = ({ x, y }, board) => {
-  const rowAboveIndex = wrapAround(y + 1);
-  const rowBelowIndex = wrapAround(y - 1);
-  const rowAbove =
-    board[rowAboveIndex] === undefined ? [] : board[rowAboveIndex];
-  const rowBelow =
-    board[rowBelowIndex] === undefined ? [] : board[rowBelowIndex];
+  const rowAbove = wrapAround(y + 1);
+  const rowBelow = wrapAround(y - 1);
   const colRight = wrapAround(x + 1);
   const colLeft = wrapAround(x - 1);
 
   return [
-    rowAbove[x], // top
-    rowAbove[colRight], // top right
+    board[rowAbove][x], // top
+    board[rowAbove][colRight], // top right
     board[y][colRight], // right
-    rowBelow[colRight], // bottom right
-    rowBelow[x], // bottom
-    rowBelow[colLeft], // bottom left
+    board[rowBelow][colRight], // bottom right
+    board[rowBelow][x], // bottom
+    board[rowBelow][colLeft], // bottom left
     board[y][colLeft], // left
-    rowAbove[colLeft], // top left
+    board[rowAbove][colLeft], // top left
   ];
 };
 
