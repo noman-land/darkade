@@ -6,14 +6,13 @@ const BOARD_SIZE = 64;
 
 const tickLengthMs = 100;
 
-const wrapAround = coord =>
-  coord >= 0 ? coord % BOARD_SIZE : coord + BOARD_SIZE;
+const wrapAround = (coord, size) => (coord >= 0 ? coord % size : coord + size);
 
 const getNeighbors = ({ x, y }, board) => {
-  const rowAbove = wrapAround(y + 1);
-  const rowBelow = wrapAround(y - 1);
-  const colRight = wrapAround(x + 1);
-  const colLeft = wrapAround(x - 1);
+  const rowAbove = wrapAround(y + 1, board.length);
+  const rowBelow = wrapAround(y - 1, board.length);
+  const colRight = wrapAround(x + 1, board.length);
+  const colLeft = wrapAround(x - 1, board.length);
 
   return [
     board[rowAbove][x], // top
