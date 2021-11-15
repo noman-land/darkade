@@ -53,12 +53,12 @@ const calculateLife = ({ x, y }, board) => {
   const liveNeighborCount = getLiveNeighborCount({ x, y }, board);
 
   // Any live cell with two or three live neighbours survives.
-  if (alive) {
-    if (liveNeighborCount === 2 || liveNeighborCount === 3) {
-      return true;
-    }
-    // Any dead cell with three live neighbours becomes a live cell.
-  } else if (liveNeighborCount === 3) {
+  // Any dead cell with three live neighbours becomes a live cell.
+  if (liveNeighborCount === 3) {
+    return true;
+  }
+
+  if (alive && liveNeighborCount === 2) {
     return true;
   }
 
