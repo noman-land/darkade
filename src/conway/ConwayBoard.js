@@ -4,6 +4,8 @@ import { Cell } from './Cell';
 import { useConway } from './ConwayHooks';
 import { Row } from './Row';
 
+import './ConwayBoard.css';
+
 export const ConwayBoard = () => {
   const { board } = useConway();
   return (

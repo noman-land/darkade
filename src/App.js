@@ -1,8 +1,8 @@
 import React from 'react';
 
-import './App.css';
-
 import { ConwayBoard } from './conway/ConwayBoard';
+
+import './App.css';
 
 export const App = () => (
   <div className="app">
