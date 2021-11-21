@@ -24,18 +24,16 @@ const getLiveNeighborCount = ({ x, y }, board) =>
 // Turn key/bitString into two dimentional array
 export const makeGameBoard = bitArray => {
   const boardSize = Math.sqrt(bitArray.length);
-  return bitArray
-    .map(() => Math.random() > 0.5)
-    .reduce((accum, value, i) => {
-      const tens = Math.floor(i / boardSize);
-      const ones = i - tens * boardSize;
-      if (accum[tens]) {
-        accum[tens][ones] = value;
-      } else {
-        accum[tens] = [value];
-      }
-      return accum;
-    }, []);
+  return bitArray.reduce((accum, value, i) => {
+    const tens = Math.floor(i / boardSize);
+    const ones = i - tens * boardSize;
+    if (accum[tens]) {
+      accum[tens][ones] = value;
+    } else {
+      accum[tens] = [value];
+    }
+    return accum;
+  }, []);
 };
 
 export const calculateLife = ({ x, y }, board) => {
