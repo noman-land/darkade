@@ -1,4 +1,6 @@
-export const DEFAULT_MS_PER_FRAME = 100;
+export const CELL_SIZE = 9;
+
+export const DEFAULT_MS_PER_FRAME = 1;
 
 const keyLength = 4096;
 

@@ -1,22 +1,12 @@
 import React from 'react';
 
-import { Cell } from './Cell';
 import { useConway } from './ConwayHooks';
-import { Row } from './Row';
 
 import './ConwayBoard.css';
 
 export const ConwayBoard = () => {
-  const { board } = useConway();
+  const { canvasRef } = useConway();
   return (
-    <div className="game-board">
-      {board.map((row, y) => (
-        <Row key={y}>
-          {row.map((alive, x) => (
-            <Cell alive={alive} key={`${x}${y}`} />
-          ))}
-        </Row>
-      ))}
-    </div>
+    <canvas className="game-board" height={576} ref={canvasRef} width={576} />
   );
 };
