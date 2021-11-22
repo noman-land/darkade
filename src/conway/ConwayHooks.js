@@ -6,7 +6,7 @@ import { calculateLife, makeGameBoard } from './ConwayUtils';
 export const useConway = () => {
   const [context, setContext] = useState();
   const [msPerFrame, setMsPerFrame] = useState(DEFAULT_MS_PER_FRAME);
-  const [board, setBoard] = useState(makeGameBoard(DUMMY_KEY));
+  const [_, setBoard] = useState(makeGameBoard(DUMMY_KEY));
 
   const canvasRef = useCallback(canvas => {
     if (!canvas.getContext) {
@@ -44,5 +44,5 @@ export const useConway = () => {
     return () => clearInterval(interval);
   }, [context, msPerFrame, setBoard]);
 
-  return { board, canvasRef, setMsPerFrame };
+  return { canvasRef, setMsPerFrame };
 };
