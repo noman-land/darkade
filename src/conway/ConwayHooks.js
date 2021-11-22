@@ -17,30 +17,31 @@ export const useConway = () => {
   }, []);
 
   useEffect(() => {
-    let interval;
-
-    if (context) {
-      interval = setInterval(() => {
-        context.clearRect(0, 0, CELL_SIZE * 64, CELL_SIZE * 64);
-        context.fillStyle = 'black';
-        setBoard(board =>
-          board.map((row, y) =>
-            row.map((_, x) => {
-              const alive = calculateLife({ x, y }, board);
-              if (alive) {
-                context.fillRect(
-                  x * CELL_SIZE,
-                  y * CELL_SIZE,
-                  CELL_SIZE,
-                  CELL_SIZE
-                );
-              }
-              return alive;
-            })
-          )
-        );
-      }, msPerFrame);
+    if (!context) {
+      return;
     }
+
+    const interval = setInterval(() => {
+      context.clearRect(0, 0, CELL_SIZE * 64, CELL_SIZE * 64);
+      context.fillStyle = 'black';
+      setBoard(board =>
+        board.map((row, y) =>
+          row.map((_, x) => {
+            const alive = calculateLife({ x, y }, board);
+            if (alive) {
+              context.fillRect(
+                x * CELL_SIZE,
+                y * CELL_SIZE,
+                CELL_SIZE,
+                CELL_SIZE
+              );
+            }
+            return alive;
+          })
+        )
+      );
+    }, msPerFrame);
+
     return () => clearInterval(interval);
   }, [context, msPerFrame, setBoard]);
 
