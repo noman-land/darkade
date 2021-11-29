@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { CELL_SIZE, DEFAULT_MS_PER_FRAME, DUMMY_KEY } from './ConwayConstants';
+import {
+  BOARD_SIZE,
+  CELL_SIZE,
+  DEFAULT_MS_PER_FRAME,
+  DUMMY_KEY,
+} from './ConwayConstants';
 import { calculateLife, makeGameBoard } from './ConwayUtils';
 
 export const useConway = () => {
   const [context, setContext] = useState();
   const [msPerFrame, setMsPerFrame] = useState(DEFAULT_MS_PER_FRAME);
-  const [_, setBoard] = useState(makeGameBoard(DUMMY_KEY));
+  const [, setBoard] = useState(makeGameBoard(DUMMY_KEY));
 
   const canvasRef = useCallback(canvas => {
     if (!canvas.getContext) {
@@ -22,7 +27,7 @@ export const useConway = () => {
     }
 
     const interval = setInterval(() => {
-      context.clearRect(0, 0, CELL_SIZE * 64, CELL_SIZE * 64);
+      context.clearRect(0, 0, CELL_SIZE * BOARD_SIZE, CELL_SIZE * BOARD_SIZE);
       context.fillStyle = 'black';
       setBoard(board =>
         board.map((row, y) =>
