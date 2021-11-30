@@ -32,7 +32,7 @@ export const useConway = () => {
       setBoard(board =>
         board.map((row, y) =>
           row.map((_, x) => {
-            const alive = calculateLife({ x, y }, board);
+            const alive = calculateLife({ board, x, y });
             if (alive) {
               context.fillRect(
                 x * CELL_SIZE,

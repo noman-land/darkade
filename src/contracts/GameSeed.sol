@@ -27,4 +27,4 @@ contract GameSeed {
     ownerBySeed[seed] = msg.sender;
     seedByOwner[msg.sender] = seed;
   }
-} 
+}

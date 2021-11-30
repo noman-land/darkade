@@ -6,7 +6,7 @@ const bytesToBinary = bytes =>
 
 const wrapAround = (coord, size) => (coord >= 0 ? coord % size : coord + size);
 
-const getNeighbors = ({ x, y }, board) => {
+const getNeighbors = ({ board, x, y }) => {
   const rowAbove = wrapAround(y + 1, board.length);
   const rowBelow = wrapAround(y - 1, board.length);
   const colRight = wrapAround(x + 1, board.length);
@@ -24,8 +24,8 @@ const getNeighbors = ({ x, y }, board) => {
   ];
 };
 
-const getLiveNeighborCount = ({ x, y }, board) =>
-  getNeighbors({ x, y }, board).filter(c => c).length;
+const getLiveNeighborCount = ({ board, x, y }) =>
+  getNeighbors({ board, x, y }).filter(c => c).length;
 
 // Turn key/bitString into two dimentional array
 export const makeGameBoard = bitArray => {
@@ -42,9 +42,9 @@ export const makeGameBoard = bitArray => {
   }, []);
 };
 
-export const calculateLife = ({ x, y }, board) => {
+export const calculateLife = ({ board, x, y }) => {
   const alive = board[y][x];
-  const liveNeighborCount = getLiveNeighborCount({ x, y }, board);
+  const liveNeighborCount = getLiveNeighborCount({ board, x, y });
 
   // Any live cell with two or three live neighbours survives.
   if (alive) {
