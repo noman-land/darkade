@@ -1,3 +1,9 @@
+const bytesToBinary = bytes =>
+  bytes
+    .split('')
+    .map(n => parseInt(n, 16).toString(2).padStart(4, 0))
+    .join('');
+
 const wrapAround = (coord, size) => (coord >= 0 ? coord % size : coord + size);
 
 const getNeighbors = ({ x, y }, board) => {
