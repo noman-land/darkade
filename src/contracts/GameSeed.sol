@@ -9,22 +9,28 @@ contract GameSeed {
     mint();
   }
 
-  mapping (bytes => address) public ownerBySeed;
-  mapping (address => bytes) public seedByOwner;
+  mapping (address => SeedParts[]) public seedPartsByOwner;
 
-  function mint() public returns(bytes memory seed) {
-    // Create unique seed based on caller
+  struct SeedParts {
+    uint256 blockNumber;
+    uint256 index;
+  }
+
+  function mint() public {
+    seedPartsByOwner[msg.sender].push(SeedParts(block.number, index++));
+  }
+
+  function getSeed(uint256 whichIndex) public view returns(bytes memory seed) {
+    SeedParts storage seedParts = seedPartsByOwner[msg.sender][whichIndex];
+
     seed = bytes.concat(
       seed, 
-      sha256(abi.encodePacked(msg.sender, block.number, index++))
+      sha256(abi.encodePacked(msg.sender, seedParts.blockNumber, seedParts.index))
     );
 
     // Pad the length of the seed to make it 4096 bits
     for (uint8 i = 0; i < 15; i++) {
       seed = bytes.concat(seed, sha256(abi.encodePacked(seed)));
     }
-
-    ownerBySeed[seed] = msg.sender;
-    seedByOwner[msg.sender] = seed;
   }
 }
