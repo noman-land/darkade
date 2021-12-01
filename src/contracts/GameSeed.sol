@@ -2,7 +2,7 @@
 pragma solidity >=0.8.10;
 
 contract GameSeed {
-  uint index = 0;
+  uint nonce = 0;
 
   constructor() {
     // Contract deployer gets first minted seed for fun
@@ -13,19 +13,19 @@ contract GameSeed {
 
   struct SeedParts {
     uint256 blockNumber;
-    uint256 index;
+    uint256 nonce;
   }
 
   function mint() public {
-    seedPartsByOwner[msg.sender].push(SeedParts(block.number, index++));
+    seedPartsByOwner[msg.sender].push(SeedParts(block.number, nonce++));
   }
 
-  function getSeed(uint256 whichIndex) public view returns(bytes memory seed) {
-    SeedParts storage seedParts = seedPartsByOwner[msg.sender][whichIndex];
+  function getSeed(uint256 index) public view returns(bytes memory seed) {
+    SeedParts storage seedParts = seedPartsByOwner[msg.sender][index];
 
     seed = bytes.concat(
       seed, 
-      sha256(abi.encodePacked(msg.sender, seedParts.blockNumber, seedParts.index))
+      sha256(abi.encodePacked(msg.sender, seedParts.blockNumber, seedParts.nonce))
     );
 
     // Pad the length of the seed to make it 4096 bits
