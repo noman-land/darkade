@@ -1,9 +1,3 @@
-const bytesToBinary = bytes =>
-  bytes
-    .split('')
-    .map(n => parseInt(n, 16).toString(2).padStart(4, 0))
-    .join('');
-
 const wrapAround = (coord, size) => (coord >= 0 ? coord % size : coord + size);
 
 const getNeighbors = ({ board, x, y }) => {
@@ -27,16 +21,24 @@ const getNeighbors = ({ board, x, y }) => {
 const getLiveNeighborCount = ({ board, x, y }) =>
   getNeighbors({ board, x, y }).filter(c => c).length;
 
+export const bytesToBinary = bytes =>
+  bytes
+    .split('')
+    .map(n => parseInt(n, 16).toString(2).padStart(4, 0))
+    .join('');
+
 // Turn key/bitString into two dimentional array
-export const makeGameBoard = bitArray => {
-  const boardSize = Math.sqrt(bitArray.length);
-  return bitArray.reduce((accum, value, i) => {
+export const makeGameBoard = bitString => {
+  const boardSize = Math.sqrt(bitString.length);
+  return bitString.split('').reduce((accum, value, i) => {
     const tens = Math.floor(i / boardSize);
     const ones = i - tens * boardSize;
+    const int = parseInt(value, 10);
+
     if (accum[tens]) {
-      accum[tens][ones] = value;
+      accum[tens][ones] = int;
     } else {
-      accum[tens] = [value];
+      accum[tens] = [int];
     }
     return accum;
   }, []);

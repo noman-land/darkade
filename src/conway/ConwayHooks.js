@@ -1,17 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Darkade } from '../darkade/Darkade';
 
-import {
-  BOARD_SIZE,
-  CELL_SIZE,
-  DEFAULT_MS_PER_FRAME,
-  DUMMY_KEY,
-} from './ConwayConstants';
-import { calculateLife, makeGameBoard } from './ConwayUtils';
+import { BOARD_SIZE, CELL_SIZE, DEFAULT_MS_PER_FRAME } from './ConwayConstants';
+import { bytesToBinary, calculateLife, makeGameBoard } from './ConwayUtils';
+
+const darkade = new Darkade('0xDarkadeAddress');
 
 export const useConway = () => {
   const [context, setContext] = useState();
   const [msPerFrame, setMsPerFrame] = useState(DEFAULT_MS_PER_FRAME);
-  const [, setBoard] = useState(makeGameBoard(DUMMY_KEY));
+  const [board, setBoard] = useState();
 
   const canvasRef = useCallback(canvas => {
     if (!canvas.getContext) {
@@ -22,7 +20,13 @@ export const useConway = () => {
   }, []);
 
   useEffect(() => {
-    if (!context) {
+    darkade
+      .getSeed()
+      .then(seed => setBoard(makeGameBoard(bytesToBinary(seed.slice(2)))));
+  }, []);
+
+  useEffect(() => {
+    if (!context || !board) {
       return;
     }
 
@@ -48,7 +52,7 @@ export const useConway = () => {
     }, msPerFrame);
 
     return () => clearInterval(interval);
-  }, [context, msPerFrame, setBoard]);
+  }, [board, context, msPerFrame, setBoard]);
 
   return { canvasRef, setMsPerFrame };
 };

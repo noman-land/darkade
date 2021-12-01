@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.10;
 
-contract GameSeed {
+contract Darkade {
   uint nonce = 0;
 
   constructor() {
